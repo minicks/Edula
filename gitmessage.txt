@@ -1,0 +1,22 @@
+# 타입 제목은 대문자로 시작합니다.
+# 본문과 푸터는 선택 사항 입니다.
+#######제목#######
+
+#######본문#######
+
+#######푸터#######
+
+##################
+# Type
+# Feat : 추가
+# Remove : 삭제
+# Update : 향상
+# Refactor : 리팩토링
+# Fix : 버그 픽스
+# Footer
+# Fixes : 이슈 수정 중
+# Resolves : 이슈 해결
+# Ref : 참고할 이슈 있을 경우
+# Related to : 관련 이슈 해결되지 않은 경우
+##################
+# $ git config --global commit.template gitmessage.txt

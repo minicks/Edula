@@ -1,0 +1,22 @@
+stages:
+  - build
+  - deploy
+
+build:
+  stage: build
+  only:
+    - develop@s06-webmobile1-sub2/S06P12D209
+  script:
+    - docker-compose build
+  tags:
+    - first
+
+deploy:
+  stage: deploy
+  only:
+    - develop@s06-webmobile1-sub2/S06P12D209
+  script:
+    - cp -r /opt/openvidu/owncert ./owncert
+    - docker-compose up -d
+  tags:
+    - first

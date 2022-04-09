@@ -1,0 +1,41 @@
+version: "3.1"
+
+services:
+  # --------------------------------------------------------------
+  #
+  #   Change this if your want use your own application.
+  #   It's very important expose your application in port 5442
+  #   and use the http protocol.
+  #
+  #   Default Application
+  #
+  #   Openvidu-Call Version: 2.20.0
+  #
+  # --------------------------------------------------------------
+  nginx-react:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: ./docker/nginx/Dockerfile
+    network_mode: host
+    volumes:
+      - ./docker/nginx/conf/conf.d:/etc/nginx/conf.d
+      - static_volume:/usr/share/nginx/html/django_static
+      - media_volume:/usr/share/nginx/html/media
+    depends_on:
+      - backend
+
+  backend:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: ./docker/backend/Dockerfile
+    entrypoint: gunicorn --bind 0:8000 server.wsgi:application
+    network_mode: host
+    volumes:
+      - static_volume:/app/backend/static
+      - media_volume:/app/backend/media
+
+volumes:
+  static_volume:
+  media_volume:

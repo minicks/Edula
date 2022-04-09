@@ -1,0 +1,36 @@
+version: "3"
+
+services:
+  nginx:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: ./docker/nginx/Dockerfile-dev
+    ports:
+      - 80:80
+    volumes:
+      - ./docker/nginx/conf-dev/conf.d:/etc/nginx/conf.d
+      - static_volume:/usr/share/nginx/html/django_static
+    depends_on:
+      - backend
+
+  backend:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: ./docker/backend/Dockerfile
+    entrypoint: gunicorn --bind 0:8000 server.wsgi:application
+    ports:
+      - 8000:8000
+    volumes:
+      - static_volume:/app/backend/static
+
+  openvidu-server-kms:
+    image: openvidu/openvidu-server-kms:2.20.0
+    ports:
+      - 4443:4443
+    environment:
+      - OPENVIDU_SECRET=MY_SECRET
+
+volumes:
+  static_volume: {}
